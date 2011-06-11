@@ -40,10 +40,9 @@ handlers:
   script: handler.py
 
 skip_files:
-- third_party/((?!(aeoid|python-gae-pytz)).*)/
-- third_party/python-gae-pytz/(?!pytz)
 - third_party/aeoid/demo
 - third_party/mkzip
+- third_party/python-markdown/tests
 - (.*/)*.git/
 - .*/\..*
 - .*/README

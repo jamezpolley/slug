@@ -34,7 +34,6 @@ def sys_path_insert(ipath):
     if ipath not in sys.path:
         sys.path.insert(0, ipath)
 
-
 def setup_django():
     """Setup the django settings."""
     os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
@@ -52,10 +51,8 @@ def setup(host=None):
             HOST = host
 
     # Add our extra modules to sys.path
-    sys_path_insert('third_party.zip')
+    sys_path_insert('third_party')
     for ipath in getpaths():
-        if 'third_party.zip' in ipath:
-            continue
         sys_path_insert(ipath)
 
     setup_django()
@@ -69,9 +66,6 @@ def lint_setup():
 
     print "APPENGINE_SDK at ", os.environ["APPENGINE_SDK"]
     sys_path_insert(os.environ["APPENGINE_SDK"])
-
-    for ipath in getpaths():
-        sys_path_insert(ipath.replace('.zip', ''))
 
     setup_django()
 

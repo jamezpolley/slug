@@ -103,50 +103,15 @@ TPT=third_party.zip.d.tmp
 third_party:
 	make -C third_party
 
-third_party.zip.d: third_party third_party.paths
-	@echo "Generating a third_party.zip dependency file."
-	@echo "THIRD_PARTY_files=\\" > $(TPT).files
-	@echo 'third_party.zip: third_party.zip.d $$(THIRD_PARTY_here)' > $(TPT).target
-	@echo '	@echo Changed files: $$?' >> $(TPT).target
-	@cd third_party; \
-	 cat ../third_party.paths | grep ^third_party.zip | sed -e's-third_party.zip/--' | (while read LINE; do \
-		PREFIX=$${LINE%% *}; \
-		for SUFFIX in $${LINE#* }; do \
-			find $$PREFIX/$$SUFFIX $(FINDARGS) >> ../$(TPT).files; \
-			echo "	cd $(CURDIR)/third_party/$$PREFIX; zip -r $(CURDIR)/third_party.zip \\" >> ../$(TPT).target; \
-			(cd $$PREFIX; find $$SUFFIX $(FINDARGS)) >> ../$(TPT).target; \
-			echo "	" >> ../$(TPT).target; \
-		done; \
-	 done)
-	@echo '' >> $(TPT).files
-	@echo 'THIRD_PARTY_here=$$(addprefix third_party/,$$(THIRD_PARTY_files)) ' >> $(TPT).files
-	@echo '' >> $(TPT).files
-	
-	@echo '' > $(TPT)
-	@cat $(TPT).files >> $(TPT)
-	@cat $(TPT).target >> $(TPT)
-	
-	@if [ ! -e $@ ]; then touch $@; fi
-	@if [ `${MD5SUM} $@ | sed -e's/ .*//'` != `${MD5SUM} $(TPT) | sed -e's/ .*//'` ]; then \
-		echo "third_party.zip.d has changed!"; \
-		mv $(TPT) $@; \
-	else \
-		echo "third_party.zip.d has not changed!"; \
-	fi
-	@rm $(TPT)*
-
-
-include third_party.zip.d
-
 ###############################################################################
 ###############################################################################
 
 upload: update
 deploy: update
-update: third_party.zip
+update:
 	${APPENGINE_SDK}/appcfg.py update .
 
-serve: third_party.zip
+serve:
 	${APPENGINE_SDK}/dev_appserver.py -a 0.0.0.0 -d --enable_sendmail .
 
 clean:
