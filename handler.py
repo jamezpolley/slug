@@ -31,6 +31,7 @@ application = webapp.WSGIApplication(
    ('/rss', rss.RSSHandler),
    ('/\d*/.*feed.*', rss.RSSHandler),
    ('/full/.*feed.*', rss.RSSHandler),
+   ('/agenda/(.*)', events.Agenda),
    ('/event/.*feed.*', rss.RSSHandler),
    ('/event/(.*)/response/show',    response.ShowResponsePage),
    ('/event/(.*)/response/update',  response.UpdateResponsePage),

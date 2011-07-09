@@ -1,3 +1,7 @@
+#body {
+    width: 100%;
+}
+
 body .neutral {
   background-color: white;
 }
@@ -12,4 +16,30 @@ body .close {
 
 body .overtime {
   background-color: red;
+}
+
+#talkdetails {
+    display: none;
+}
+
+div {
+    text-align: center;
+    width: 100%;
+}
+
+#currentspeaker {
+    font-size: 30;
+}
+
+#currenttitle {
+    font-size: 60;
+}
+
+#currentseconds {
+    font-size: 120;
+}
+
+#talkselect {
+    position: absolute;
+    bottom: 0;
 }

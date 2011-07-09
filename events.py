@@ -46,6 +46,25 @@ class Event(webapp.RequestHandler):
             'templates/event.html', locals()))
 
 
+class Agenda(webapp.RequestHandler):
+    """Handler for displaying the agenda for a single event."""
+
+    def get (self, key=None):
+        if not key:
+            key = self.request.get('id')
+
+        key = long(key)
+        event = models.Event.get_by_id(key)
+        agenda = event.agenda
+
+        template_values = {}
+        template_values['agenda'] = agenda
+        template_values['self'] = self
+
+        self.response.headers['Content-Type'] = 'text/html'
+        self.response.out.write(r(
+            'templates/countdown.html', template_values))
+
 class Events(webapp.RequestHandler):
     """Handler for display a table of events."""
 
